@@ -41,6 +41,23 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const CardWrapper = styled.div`
+  display: grid;
+  gap: 20px;
+
+  @media (min-width: 1200px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 640px) and (max-width: 1199px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 639px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+`;
+
 const Home = () => {
   return (
     <Container>
@@ -48,8 +65,14 @@ const Home = () => {
         Welcome to Popular Posts!
         <Span>Generated with AI</Span>
       </HeadLine>
-      <SearchBar>Searchbar</SearchBar>
-      <Wrapper></Wrapper>
+      <SearchBar />
+      <Wrapper>
+        <CardWrapper>
+          <div>card</div>
+          <div>card</div>
+          <div>card</div>
+        </CardWrapper>
+      </Wrapper>
     </Container>
   );
 };
