@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AutoAwesome, CreateRounded } from "@mui/icons-material";
 import TextInput from "../input/TextInput";
 import Button from "../buttons/button";
+import { CreatePost, GenerateImageFromPrompt } from "../../apis";
 
 const Form = styled.div`
   flex: 1;
@@ -45,6 +47,7 @@ const Actions = styled.div`
   flex: 1;
   gap: 8px;
 `;
+
 const GenerateImage = ({
   createPostLoading,
   setcreatePostLoading,
@@ -53,11 +56,37 @@ const GenerateImage = ({
   post,
   setPost,
 }) => {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+
   const generateImage = async () => {
     setGenerateImageLoading(true);
+    setError("");
+    await GenerateImageFromPrompt({ prompt: post.prompt })
+      .then((res) => {
+        setPost({
+          ...post,
+          photo: `data:image/jpeg;base64,${res?.data?.photo}`,
+        });
+        setGenerateImageLoading(false);
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.message);
+        setGenerateImageLoading(false);
+      });
   };
   const createPost = async () => {
     setcreatePostLoading(true);
+    setError("");
+    await CreatePost(post)
+      .then((res) => {
+        navigate("/");
+        setcreatePostLoading(false);
+      })
+      .catch((error) => {
+        setError(error?.response?.data?.message);
+        setcreatePostLoading(false);
+      });
   };
 
   return (
@@ -85,6 +114,8 @@ const GenerateImage = ({
           value={post.prompt}
           handelChange={(e) => setPost({ ...post, prompt: e.target.value })}
         />
+        {error && <div style={{ color: "red" }}>{error}</div>}* You can post the
+        AI Generated Image to showcase in the community!
       </Body>
       <Actions>
         <Button
