@@ -27,8 +27,20 @@ app.get("/", (req, res) => {
     })
 })
 
+
+const connectDB = () => {
+    mongoose.set("strictQuery", true);
+    mongoose
+        .connect(process.env.MONGODB_URL)
+        .then(() => console.log("Connected to Mongo DB"))
+        .catch((err) => {
+            console.error("failed to connect with mongo");
+            console.error(err);
+        });
+};
 const server = async() => {
     try {
+        connectDB();
         app.listen(3001, () => {
             console.log("Server is running on 3001")
         })
