@@ -2,6 +2,7 @@ import cores from "cors"
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import PostRouter from "./routes/Post.js"
 
 
 dotenv.config();
@@ -21,12 +22,14 @@ app.use((error, req, res, next) => {
     })
 })
 
+
 app.get("/", (req, res) => {
     res.status(200).json({
         message: "Hello World"
     })
 })
 
+app.use("/api/post", PostRouter)
 
 const connectDB = () => {
     mongoose.set("strictQuery", true);
