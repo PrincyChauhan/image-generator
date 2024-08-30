@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
+import ImageCard from "../components/cards/ImageCard";
 
 const Container = styled.div`
   padding: 30px 30px;
@@ -68,9 +69,10 @@ const Home = () => {
       <SearchBar />
       <Wrapper>
         <CardWrapper>
-          <div>card</div>
-          <div>card</div>
-          <div>card</div>
+          <ImageCard />
+          <ImageCard />
+          <ImageCard />
+          <ImageCard />
         </CardWrapper>
       </Wrapper>
     </Container>
