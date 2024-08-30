@@ -1,6 +1,7 @@
 import styled, { ThemeProvider } from "styled-components";
 import { darkTheme } from "./utils/Theme";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import CreatePost from "./pages/CreatePost";
 
@@ -30,6 +31,7 @@ function App() {
       <Container>
         <Wrapper>
           <BrowserRouter>
+            <Navbar />
             <Routes>
               <Route path="/" exact element={<Home />} />
               <Route path="/post" exact element={<CreatePost />} />
