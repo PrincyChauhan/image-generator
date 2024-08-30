@@ -68,8 +68,7 @@ const ImageCard = ({ item, heights }) => {
       <LazyLoadImage
         alt={item?.prompt}
         width="100%"
-        // src={item?.photo}
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/800px-Cat03.jpg"
+        src={item?.photo}
         style={{ borderRadius: "12px" }}
       />
       <HoverOverlay>
