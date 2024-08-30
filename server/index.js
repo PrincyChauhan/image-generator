@@ -2,9 +2,10 @@ import cores from "cors"
 import express from "express"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import generateImageRoute from "./routes/GenerateImage.js";
 import PostRouter from "./routes/Post.js"
 
-
+// load env data
 dotenv.config();
 
 const app = express();
@@ -29,8 +30,12 @@ app.get("/", (req, res) => {
     })
 })
 
+// Routes
 app.use("/api/post", PostRouter)
+app.use("/api/generateImage/", generateImageRoute);
 
+
+// DB connection
 const connectDB = () => {
     mongoose.set("strictQuery", true);
     mongoose
@@ -41,6 +46,8 @@ const connectDB = () => {
             console.error(err);
         });
 };
+
+// Server Connection
 const server = async() => {
     try {
         connectDB();
@@ -51,5 +58,4 @@ const server = async() => {
         console.log(error)
     }
 }
-
 server()
