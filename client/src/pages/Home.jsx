@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import SearchBar from "../components/SearchBar";
 
 const Container = styled.div`
   padding: 30px 30px;
@@ -47,6 +48,7 @@ const Home = () => {
         Welcome to Popular Posts!
         <Span>Generated with AI</Span>
       </HeadLine>
+      <SearchBar>Searchbar</SearchBar>
       <Wrapper></Wrapper>
     </Container>
   );
