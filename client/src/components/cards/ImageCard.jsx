@@ -62,7 +62,10 @@ const Author = styled.div`
   color: ${({ theme }) => theme.white};
 `;
 
-const ImageCard = ({ item, heights }) => {
+const ImageCard = ({ item }) => {
+  if (!item || !item.prompt || !item.name || !item.photo) {
+    return null;
+  }
   return (
     <Card>
       <LazyLoadImage

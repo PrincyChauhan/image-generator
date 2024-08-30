@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import styled from "styled-components";
 import SearchBar from "../components/SearchBar";
 import ImageCard from "../components/cards/ImageCard";
+import { GetPosts } from "../apis";
+import { CircularProgress } from "@mui/material";
 
 const Container = styled.div`
   padding: 30px 30px;
@@ -60,22 +62,96 @@ const CardWrapper = styled.div`
 `;
 
 const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [filteredPost, setFilteredPost] = useState([]);
+
+  const staticPosts = useMemo(
+    () => [
+      {
+        id: 1,
+        prompt: "A beautiful sunset over a calm lake",
+        author: "John Doe",
+        imageUrl:
+          "https://img.freepik.com/premium-photo/beautiful-sunset-calm-lake-with-tall-grasses-foreground_14117-578815.jpg",
+      },
+      {
+        id: 2,
+        prompt: "A snowy mountain peak with a clear blue sky",
+        author: "Jane Smith",
+        imageUrl:
+          "https://images.stockcake.com/public/9/7/d/97d52752-a5a4-4349-8465-afda1de2e3e7_large/snowy-mountain-peaks-stockcake.jpg",
+      },
+    ],
+    []
+  );
+  const getPosts = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await GetPosts();
+      const postData = res?.data?.data || [];
+      setPosts(postData);
+      setFilteredPost([...staticPosts, ...postData]);
+    } catch (error) {
+      setError(error?.response?.data?.message || "Failed to fetch posts");
+      setFilteredPost(staticPosts);
+    } finally {
+      setLoading(false);
+    }
+  }, [staticPosts]);
+
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
+
+  useEffect(() => {
+    if (!search) {
+      setFilteredPost([...staticPosts, ...posts]);
+      // } else if (posts?.length || staticPosts?.length) {
+      //   const filteredPosts = [...staticPosts, ...posts].filter((post) => {
+      //     const promptMatch = post?.prompt?.toLowerCase().includes(search);
+      //     const authorMatch = post?.author?.toLowerCase().includes(search);
+
+      //     return promptMatch || authorMatch;
+      //   });
+
+      // setFilteredPost(filteredPosts);
+    }
+  }, [posts, search, staticPosts]);
+
   return (
     <Container>
       <HeadLine>
         Welcome to Popular Posts!
         <Span>Generated with AI</Span>
       </HeadLine>
-      <SearchBar />
+      <SearchBar
+        search={search}
+        handleChange={(e) => setSearch(e.target.value)}
+      />
       <Wrapper>
-        <CardWrapper>
-          <ImageCard />
-          <ImageCard />
-          <ImageCard />
-          <ImageCard />
-        </CardWrapper>
+        {error && <div style={{ color: "red" }}>{error}</div>}
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <CardWrapper>
+            {filteredPost?.length > 0 ? (
+              filteredPost
+                .slice()
+                .reverse()
+                .map((item, index) =>
+                  item ? <ImageCard key={index} item={item} /> : null
+                )
+            ) : (
+              <>No Posts Found !!</>
+            )}
+          </CardWrapper>
+        )}
       </Wrapper>
     </Container>
   );
 };
+
 export default Home;
