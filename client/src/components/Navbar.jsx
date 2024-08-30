@@ -1,5 +1,8 @@
+import Button from "./buttons/button";
 import React from "react";
 import styled from "styled-components";
+import { AddRounded, WebRounded } from "@mui/icons-material";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Container = styled.div`
   flex: 1;
@@ -18,9 +21,35 @@ const Container = styled.div`
 `;
 
 const Navbar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  let path = location.pathname.split("/");
+
+  const gotoCreatePost = () => {
+    navigate("/post");
+  };
+  const gottoHome = () => {
+    navigate("/");
+  };
+
   return (
     <Container>
-      <div>Navbar</div>
+      ImageGenerator
+      {path[1] === "post" ? (
+        <Button
+          text="Explore Posts"
+          leftIcon={<WebRounded style={{ fontSize: "18px" }} />}
+          onClick={gottoHome}
+          type="secondary"
+        />
+      ) : (
+        <Button
+          text="Create new post"
+          leftIcon={<AddRounded style={{ fontSize: "18px" }} />}
+          onClick={gotoCreatePost}
+        />
+      )}
     </Container>
   );
 };
