@@ -73,15 +73,15 @@ const Home = () => {
       {
         id: 1,
         prompt: "A beautiful sunset over a calm lake",
-        author: "John Doe",
-        imageUrl:
+        name: "John Doe",
+        photo:
           "https://img.freepik.com/premium-photo/beautiful-sunset-calm-lake-with-tall-grasses-foreground_14117-578815.jpg",
       },
       {
         id: 2,
         prompt: "A snowy mountain peak with a clear blue sky",
-        author: "Jane Smith",
-        imageUrl:
+        name: "Jane Smith",
+        photo:
           "https://images.stockcake.com/public/9/7/d/97d52752-a5a4-4349-8465-afda1de2e3e7_large/snowy-mountain-peaks-stockcake.jpg",
       },
     ],
